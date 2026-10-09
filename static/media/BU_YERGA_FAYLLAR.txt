@@ -1,0 +1,3 @@
+Ixtiyoriy: o'zingizning OVOZLI XABARINGIZNI shu papkaga voice.mp3 nomi bilan qo'ying.
+Sayt uni avtomatik aniqlaydi va sevgi maktubi ichida tinglash tugmasini ko'rsatadi.
+Fayl qo'shilmasa ham, sayt to'liq ishlaydi.

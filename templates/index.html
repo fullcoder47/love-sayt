@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#140d1c">
+  <meta name="description" content="{{ site.her_name }} uchun {{ site.his_name }}dan — kulgi, muhabbat va kichkina mo‘jizalarga boy shaxsiy olam.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ site.site_title }}">
+  <meta property="og:description" content="Oddiy havola emas. Yurakdan yaratilgan kichkina olam 💗">
+  <meta property="og:image" content="{{ url_for('static', filename='img/og-cover.png', _external=True) }}">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex,nofollow">
+  <title>{{ site.site_title }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script id="site-data" type="application/json">{{ site | tojson }}</script>
+  <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body class="is-locked">
+  <a class="skip-link" href="#main">Asosiy qismga o‘tish</a>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="atmosphere atmosphere-one" aria-hidden="true"></div>
+  <div class="atmosphere atmosphere-two" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- 1. Kinematik boshlanish -->
+  <div id="intro" class="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+    <div class="intro-aurora" aria-hidden="true"></div>
+    <div class="intro-content">
+      <div class="intro-emblem" aria-hidden="true">✦ <span>♡</span> ✦</div>
+      <div class="micro-label">EKSKLYUZIV TAKLIFNOMA · FAQAT BIR INSON UCHUN</div>
+      <h1 id="intro-title">Hey, <em>{{ site.her_name }}.</em></h1>
+      <p>{{ site.intro_question }}</p>
+      <button class="button button-primary intro-enter" id="enter-site" type="button">
+        <span>{{ site.intro_button }}</span> <span aria-hidden="true">↗</span>
+      </button>
+      <span class="intro-sign">Mehr bilan: {{ site.his_name }} <span aria-hidden="true">♥</span></span>
+    </div>
+    <div class="intro-bottom">BU SAYTNI OCHISHING BILAN KICHIK SEHR BOSHLANADI ✨</div>
+  </div>
+
+  <!-- Navigatsiya -->
+  <header class="nav-wrap" id="topbar">
+    <nav class="nav page-width" aria-label="Asosiy menyu">
+      <a class="brand" href="#home" aria-label="Bosh sahifa"><span class="brand-icon">♥</span><span>S<span class="brand-thin"> & </span>M<span class="brand-dot">.</span></span></a>
+      <div class="nav-links">
+        <a href="#story">Hikoyamiz</a>
+        <a href="#quiz">Savollar</a>
+        <a href="#letter">Maktub</a>
+      </div>
+      <div class="nav-actions">
+        <div class="progress-mini" title="Sehrli olam bo‘ylab sayohat" aria-label="Sayohat jarayoni"><span class="progress-mini-heart">♥</span><span id="overall-progress">0%</span></div>
+        <button id="music-toggle" class="icon-button sound-button" type="button" aria-label="Musiqani yoqish" aria-pressed="false" title="Mayin musiqa">♫</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- 2. Hero -->
+    <section id="home" class="hero section-shell">
+      <div class="page-width hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><span class="eyebrow-rule"></span> BIR INSON. MINGLAB SABABLAR.</div>
+          <p class="hero-kicker">Dunyodagi eng chiroyli ism...</p>
+          <h2 class="hero-title"><span class="hero-title-first">Bu hikoya</span><em>{{ site.her_name }}</em><span class="hero-title-last">haqida.</span></h2>
+          <p class="hero-description">{{ site.tagline }}</p>
+          <p class="hero-subdescription">{{ site.hero_note }}</p>
+          <div class="hero-buttons">
+            <a class="button button-primary" href="#story">Hikoyani boshlash <span aria-hidden="true">↗</span></a>
+            <a class="button button-outline" href="#quiz">Meni sinab ko‘r 😏</a>
+          </div>
+          <div class="hero-signature"><span class="signature-heart">♥</span> <span>Senga, butun qalbim bilan<br><strong>{{ site.his_name }}dan.</strong></span></div>
+        </div>
+        <div class="hero-art reveal" aria-label="Yurak atrofidagi yulduzli romantik tasvir">
+          <div class="art-spark spark-a">✦</div><div class="art-spark spark-b">✧</div><div class="art-spark spark-c">✦</div>
+          <div class="orbital orbital-one"></div><div class="orbital orbital-two"></div><div class="orbital orbital-three"></div>
+          <div class="orbit-star orbit-star-one">✧</div><div class="orbit-star orbit-star-two">✦</div>
+          <div class="heart-halo"></div>
+          <button type="button" id="secret-heart" class="heart-art" aria-label="Sehrli yurakni bosing — maxfiy syurpriz bor" title="Meni 5 marta bos 🤫">
+            <svg viewBox="0 0 310 294" role="img" aria-hidden="true"><defs><linearGradient id="heart-gradient" x1=".13" y1=".05" x2=".88" y2="1"><stop stop-color="#ffe5dd"/><stop offset=".31" stop-color="#f3a6b4"/><stop offset=".72" stop-color="#e46b8f"/><stop offset="1" stop-color="#9e4c85"/></linearGradient><linearGradient id="heart-highlight" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#fff3e7" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><filter id="heart-shadow" x="-30%" y="-30%" width="160%" height="175%"><feGaussianBlur in="SourceAlpha" stdDeviation="9" result="b"/><feOffset dy="14"/><feComponentTransfer><feFuncA type="linear" slope=".3"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path filter="url(#heart-shadow)" fill="url(#heart-gradient)" d="M155 274C133 257 20 167 11 98-3-11 111-21 155 53c44-74 158-64 144 45-9 69-122 159-144 176Z"/><path fill="url(#heart-highlight)" d="M56 86c7-38 47-56 78-30 6 5 10 13 11 21-32-25-62-19-89 9Z"/><path fill="#ffe7df" opacity=".42" d="M246 54c23 10 40 34 34 65-5 22-17 37-24 45 13-40 11-83-10-110Z"/></svg>
+            <span class="heart-monogram">M</span>
+          </button>
+          <div class="art-caption"><span>∞</span> sen va men <span>∞</span></div>
+          <div class="art-bubble bubble-one">my favorite person <span>♡</span></div>
+          <div class="art-bubble bubble-two">always you <span>✦</span></div>
+        </div>
+      </div>
+      <a href="#story" class="scroll-indicator"><span class="scroll-line"></span> PASTGA TUSH <span aria-hidden="true">↓</span></a>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div class="marquee-track">LOVE YOU TO THE MOON & BACK <span>✶</span> SEN MENING ENG CHIROYLI TASODIFIMSAN <span>✶</span> LOVE YOU TO THE MOON & BACK <span>✶</span> SEN MENING ENG CHIROYLI TASODIFIMSAN <span>✶</span></div></div>
+
+    <!-- 3. Hikoya -->
+    <section id="story" class="section-shell story-section">
+      <div class="page-width">
+        <div class="section-heading reveal"><span class="section-num">01 / BIZNING OLAM</span><h2>Har bir sevgi — <em>bir hikoya.</em></h2><p>Biznikining esa eng qiziq joylari hali oldinda.</p></div>
+        <div class="timeline">
+          {% for chapter in site.story_steps %}
+          <div class="timeline-item reveal"><div class="timeline-index">0{{ loop.index }}</div><div class="timeline-marker" aria-hidden="true"><span></span></div><div class="timeline-text"><span class="eyebrow-muted">{{ chapter.eyebrow }}</span><h3>{{ chapter.title }}</h3><p>{{ chapter.text }}</p></div></div>
+          {% endfor %}
+        </div>
+        {% if site.special_date %}<p class="special-date">Biz uchun muhim sana: <strong>{{ site.special_date }}</strong> ✧</p>{% endif %}
+      </div>
+    </section>
+
+    <!-- 4. Kartalar -->
+    <section id="memories" class="section-shell memory-section">
+      <div class="page-width">
+        <div class="section-heading reveal"><span class="section-num">02 / XOTIRALAR QUTISI</span><h2>Senga aytmoqchi bo‘lgan <em>kichkina gaplarim.</em></h2><p>Kartochkalarga bos. Ularning orqasida senga sirlar bor. 💌</p></div>
+        <div class="memory-grid">
+          {% for card in site.memory_cards %}
+          <button class="memory-card reveal" type="button" aria-label="{{ card.title }} kartasini ochish" aria-pressed="false"><span class="memory-inner"><span class="memory-front"><span class="memory-index">{{ card.number }} / 06</span><span class="memory-emoji">{{ card.emoji }}</span><strong>{{ card.title }}</strong><span class="memory-hint">sirni ochish ↗</span></span><span class="memory-back"><span class="memory-back-ornament">❝</span><span class="memory-message">{{ card.message }}</span><span class="memory-hint">yana yopish ↶</span></span></span></button>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    {% if gallery or video_available %}
+    <!-- 4.5 Ixtiyoriy: shaxsiy rasmlar va video -->
+    <section id="album" class="section-shell album-section">
+      <div class="page-width">
+        <div class="section-heading reveal"><span class="section-num">✦ / BIZNING SURATLAR</span><h2>Kadrlar ortida <em>ikkimizning dunyomiz.</em></h2><p>Eng chiroyli xotiralar hech qachon unutilmasin. 📸</p></div>
+        {% if gallery %}<div class="album-grid">{% for photo in gallery %}<figure class="album-photo reveal"><img src="{{ url_for('static', filename=photo) }}" alt="Bizning xotira — surat {{ loop.index }}" loading="lazy" decoding="async"><figcaption>Bizning lahza ♡ {{ '%02d' | format(loop.index) }}</figcaption></figure>{% endfor %}</div>{% endif %}
+        {% if video_available %}<div class="love-video reveal"><video controls playsinline preload="metadata" aria-label="Bizning maxsus videomiz"><source src="{{ url_for('static', filename='media/love-video.mp4') }}" type="video/mp4">Brauzeringiz videoni qo‘llab-quvvatlamaydi.</video></div>{% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- 5. Savollar -->
+    <section id="quiz" class="section-shell quiz-section">
+      <div class="page-width">
+        <div class="section-heading reveal"><span class="section-num">03 / KICHKINA SINOV</span><h2>Sevgi testi. <em>Jiddiy emas!</em> 😄</h2><p>To‘g‘ri yoki noto‘g‘ri javob yo‘q. Faqat kulgi va juda ko‘p yurakchalar.</p></div>
+        <div class="quiz-card reveal">
+          <div class="quiz-topline"><span><span class="pulse-dot"></span> MAXSUS {{ site.her_name | upper }} TESTI</span><span id="quiz-count">01 / {{ '%02d' | format(site.quiz | length) }}</span></div>
+          <div class="quiz-track"><span id="quiz-progress"></span></div>
+          <div id="quiz-play" aria-live="polite">
+            <span id="quiz-category" class="quiz-category">SAVOL №01</span>
+            <h3 id="quiz-question">Savollar yuklanmoqda...</h3>
+            <div id="quiz-options" class="quiz-options"></div>
+            <div id="quiz-feedback" class="quiz-feedback" role="status" hidden></div>
+            <div class="quiz-controls"><span id="quiz-caption">Javoblardan birini tanla ✨</span><button class="button button-primary quiz-next" id="quiz-next" type="button" disabled>Keyingi savol <span aria-hidden="true">→</span></button></div>
+          </div>
+          <div id="quiz-complete" class="quiz-complete" hidden><span class="completion-icon">🏆</span><h3>Tabriklayman, malikam!</h3><p>Sen testni a'lo darajada yakunlading. Mukofot: cheksiz quchoqlar, juda ko‘p kulgi va bir dona baxtli Samandar! 🤗</p><button class="button button-outline" id="quiz-replay" type="button">Yana o‘ynash ↻</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Qochadigan yo'q -->
+    <section id="question" class="section-shell proposal-section">
+      <div class="page-width">
+        <div class="proposal-panel reveal">
+          <div class="corner-ornament corner-tl">✧</div><div class="corner-ornament corner-br">✧</div>
+          <span class="section-num">04 / BIR JUDAYAM MUHIM SAVOL</span>
+          <span class="proposal-emoji">🥹</span>
+          <h2>Men bilan yana millionta <em>chiroyli xotira</em> yaratishga rozimisan?</h2>
+          <p id="proposal-response">Faqat shoshmay javob ber... ayniqsa “Yo‘q” tugmasini topa olsang! 😂</p>
+          <div class="choice-area" id="choice-area">
+            <button id="yes-button" class="button button-primary yes-button" type="button">HA, ALBATTA! 💗</button>
+            <button id="no-button" class="button button-no no-button" type="button">Yo‘q 🙈</button>
+          </div>
+          <a class="proposal-skip" href="#game">Bu hazilni o‘tkazib yuborish ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Nega aynan sen -->
+    <section id="reasons" class="section-shell reasons-section">
+      <div class="page-width">
+        <div class="section-heading reveal"><span class="section-num">05 / SENI NEGA SEVAMAN?</span><h2>Javobi oddiy: <em>sen — sensan.</em></h2><p>Sabablar mingta. Bu yerda faqat to‘rttasini joyladim.</p></div>
+        <div class="reasons-grid">
+          {% for reason in site.reasons %}
+          <div class="reason-card reveal"><span class="reason-no">0{{ loop.index }}</span><span class="reason-emoji">{{ reason.emoji }}</span><h3>{{ reason.title }}</h3><p>{{ reason.text }}</p></div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Mini-game -->
+    <section id="game" class="section-shell game-section">
+      <div class="page-width game-layout">
+        <div class="game-copy reveal"><span class="section-num">06 / MINI O‘YIN</span><h2>Yuraklarni <em>tutib ol!</em></h2><p>Uchayotgan yurakchalarga bosib, 10 ta yurak yig‘. Har bittasida kichkina muhabbat bor.</p><div class="game-stats"><span class="game-score-big"><strong id="game-score">0</strong><span>/ 10</span></span><span id="game-status">Boshlashga tayyormisan? 💞</span></div><button id="game-start" class="button button-primary" type="button">O‘yinni boshlash <span aria-hidden="true">↗</span></button></div>
+        <div class="game-board reveal" id="game-board" aria-label="Yurakchalarni tutish maydoni"><span class="game-board-glow" aria-hidden="true"></span><span class="game-board-star one" aria-hidden="true">✧</span><span class="game-board-star two" aria-hidden="true">✧</span><div id="game-idle" class="game-idle"><span>💗</span><p>Bu yerda yuraklar uchadi...</p></div></div>
+      </div>
+    </section>
+
+    <!-- 9. Uchrashuv tasodifi -->
+    <section id="date-idea" class="section-shell date-section">
+      <div class="page-width date-panel reveal"><span class="section-num">07 / TAQDIR G‘ILDIRAGI</span><div class="date-content"><div><h2>Keyingi uchrashuvimiz <em>qanday o‘tadi?</em></h2><p>Tugmani bos. Taqdir bizga kichkina reja tanlasin. ✨</p></div><div class="date-result-box"><span class="date-result-label">BIZGA CHIQQAN REJA</span><p id="date-result">Hali noma'lum... balki juda romantikdir? 💭</p><button class="button button-outline" id="date-spin" type="button">Taqdirni sinash 🎲</button></div></div></div>
+    </section>
+
+    <!-- 10. Maktub -->
+    <section id="letter" class="section-shell letter-section">
+      <div class="page-width letter-grid"><div class="letter-copy reveal"><span class="section-num">08 / YURAGIMDAN MAKTUB</span><h2>Ba'zi gaplarni <em>yurak aytadi.</em></h2><p>Shunchaki o‘qish uchun emas. His qilish uchun yozilgan maktub.</p><button id="letter-open" class="button button-primary" type="button">Maktubni ochish <span aria-hidden="true">✉</span></button>{% if voice_available %}<p class="letter-voice-hint">P.S. Ichida ovozli xabar ham bor 🎧</p>{% endif %}</div><button id="envelope-open" class="envelope-scene reveal" type="button" aria-label="Sevgi maktubini ochish"><span class="envelope-sheet"><span>For my love</span><strong>{{ site.her_name }} ♡</strong></span><span class="envelope-body"><span class="envelope-seal">♥</span></span><span class="envelope-shadow"></span></button></div>
+    </section>
+
+    <!-- 11. Yakun -->
+    <section id="final" class="section-shell final-section">
+      <div class="page-width final-inner reveal"><span class="final-stars">✦ &nbsp; ✧ &nbsp; ✦</span><span class="section-num">09 / OXIRGI EMAS, ENG SHIRIN SYURPRIZ</span><h2>Hamma yo‘llar <em>senga olib keladi.</em></h2><p>Hali ochilmagan bitta sehrli sovg‘a qoldi. Buni ham sen uchun asrab qo‘ydim.</p><button id="final-open" class="gift-button" type="button" aria-label="Oxirgi sovg‘ani ochish"><span class="gift-lid">🎀</span><span class="gift-box">🎁</span><span class="gift-spark">✦</span></button><button class="button button-primary" id="final-open-secondary" type="button">Oxirgi syurprizni ochish <span aria-hidden="true">♡</span></button><div class="end-signature">Forever your biggest fan,<br><em>{{ site.his_name }}</em></div></div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="page-width footer-inner"><span>Made with <span class="footer-heart">♥</span> by {{ site.his_name }}</span><span>Birgina {{ site.her_name }} uchun · © 2026</span><a href="#home">Yuqoriga ↑</a></div></footer>
+
+  <!-- Maktub oynasi -->
+  <div id="letter-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="letter-title" hidden><div class="modal-backdrop" data-close="letter-modal"></div><div class="modal-card letter-modal-card"><button class="modal-close" type="button" data-close="letter-modal" aria-label="Yopish">✕</button><div class="letter-paper"><span class="letter-deco">✧ &nbsp; ♡ &nbsp; ✧</span><span class="letter-paper-label">SENGA YOZILGAN MAKTUB</span><h2 id="letter-title">Mening {{ site.pet_name }}ga...</h2>{% for paragraph in site.letter %}<p>{{ paragraph }}</p>{% endfor %}<div class="letter-paper-footer">Seni sevuvchi,<br><em>{{ site.his_name }}</em> <span>♥</span></div>{% if voice_available %}<div class="voice-note"><span>🎧 Mendan senga ovozli xabar</span><audio controls preload="none" src="{{ url_for('static', filename='media/voice.mp3') }}">Brauzeringiz audio ijrosini qo‘llamaydi.</audio></div>{% endif %}</div></div></div>
+
+  <!-- Final oynasi -->
+  <div id="final-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="final-title" hidden><div class="modal-backdrop" data-close="final-modal"></div><div class="modal-card final-modal-card"><button class="modal-close" type="button" data-close="final-modal" aria-label="Yopish">✕</button><div class="final-modal-sparkle">✦ · ✧ · ✦</div><span class="final-modal-heart">💝</span><span class="section-num">BU YERGA YETIB KELGANING UCHUN RAHMAT</span><h2 id="final-title">Seni yaxshi ko‘raman, <em>{{ site.her_name }}!</em></h2><p>{{ site.final_message }}</p><div class="final-modal-actions"><button id="share-love" class="button button-primary" type="button">Bu mehrni ulashish ↗</button><button class="button button-outline" type="button" data-close="final-modal">Yana bir bor ko‘rish ♡</button></div><small>Sen tabassum qilsang — men maqsadimga yetdim. ✨</small></div></div>
+
+  <!-- Yashirin syurpriz -->
+  <div id="secret-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="secret-title" hidden><div class="modal-backdrop" data-close="secret-modal"></div><div class="modal-card secret-modal-card"><button class="modal-close" type="button" data-close="secret-modal" aria-label="Yopish">✕</button><span class="secret-big">💗</span><span class="section-num">SIRLI YURAK TOPILDI!</span><h2 id="secret-title">Buni qanday topding, sehrgar? ✨</h2><p>{{ site.secret_message }}</p><button class="button button-primary" type="button" data-close="secret-modal">Sir o‘zimizda qolsin 🤫</button></div></div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div id="particle-layer" class="particle-layer" aria-hidden="true"></div>
+</body>
+</html>
